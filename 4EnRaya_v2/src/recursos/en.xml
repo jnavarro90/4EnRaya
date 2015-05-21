@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tableroSwing>
+  <app>
+    <titulo>Swing Board</titulo>
+    <version>Swing Board 1.1 (04/2012)</version>
+    <autor>CCC</autor>
+    <lenguaje>en</lenguaje>
+    <icono>barco.png</icono>    
+  </app>
+  <UI>
+    <menus>
+      <menu>
+        <id>MENU_FICHERO</id>
+        <texto>File</texto>
+        <menuItems>
+          <menuItem>
+            <id>MENU_ITEM_SALIR</id>
+            <texto>Exit</texto>
+            <atajo>E</atajo>                   
+          </menuItem>
+        </menuItems>
+      </menu>
+      <menu>
+        <id>MENU_AYUDA</id>
+        <texto>Help</texto>
+        <menuItems>
+          <menuItem>
+            <id>MENU_ITEM_ACERCA_DE</id>
+            <texto>About...</texto>
+            <atajo>A</atajo>                   
+          </menuItem>
+        </menuItems>
+      </menu>
+    </menus>
+    <etiquetas>
+      <etiqueta>
+        <id>CONTRINCANTE</id>
+        <texto>Adversary: </texto>
+      </etiqueta>
+      <etiqueta>
+        <id>BOTON_INVITAR</id>
+        <texto>Invite</texto>
+      </etiqueta>
+      <etiqueta>
+        <id>ESTADO_TABLERO</id>
+        <texto>State: </texto>
+      </etiqueta>
+    </etiquetas>
+    <etiquetasSistema>
+      <etiquetaSistema>
+        <id>OptionPane.cancelButtonText</id>
+        <texto>Cancel</texto>
+      </etiquetaSistema>
+      <etiquetaSistema>
+        <id>OptionPane.okButtonText</id>
+        <texto>OK</texto>
+      </etiquetaSistema>
+      <etiquetaSistema>
+        <id>OptionPane.noButtonText</id>
+        <texto>No</texto>
+      </etiquetaSistema>
+      <etiquetaSistema>
+        <id>OptionPane.yesButtonText</id>
+        <texto>Yes</texto>
+      </etiquetaSistema>
+    </etiquetasSistema>
+  </UI>
+</tableroSwing>
+
