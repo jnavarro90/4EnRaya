@@ -2,14 +2,15 @@ package modelo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import vista.Observador;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  *
  * @author Javi Navarro
  * @version 2
  */
-public class Tablero implements Serializable{
+public class Tablero extends Observable implements Serializable{
     private final int  MAX_COLUMNAS = 8;
     private final int MAX_FILAS = 7;
     private final int COL_MIN = 0;
@@ -18,7 +19,7 @@ public class Tablero implements Serializable{
     private final int FIL_MIN = 1;
     private final int ERROR = -1;
     private Casilla casillas[][];
-    private java.util.List<Observador> observadores = new ArrayList<>();
+    private java.util.List<Observer> observadores = new ArrayList<>();
     private int movimientos;
     public Tablero() {
         casillas = new Casilla[MAX_FILAS][MAX_COLUMNAS];
@@ -58,7 +59,8 @@ public class Tablero implements Serializable{
     public void ponerFicha(int fil, int col, String sim){
         this.casillas[fil][col] = new Casilla(fil, col, sim);
         this.movimientoHecho();
-        this.notifica(casillas);
+        setChanged();
+        notifyObservers(casillas);
     }
     
     /**
@@ -300,19 +302,4 @@ public class Tablero implements Serializable{
     public int getMovimientos() {
         return movimientos;
     }
-    /**
-   * nuevoObservador
-   */   
-  public void nuevoObservador(Observador observador) {
-    observadores.add(observador);
-  }
-    
-    /**
-   * notifica
-   */  
-  public void notifica(Casilla[][] casillas) {
-    for(Observador observador: observadores){
-        observador.actualiza(casillas);
-    }    
-  }
 }

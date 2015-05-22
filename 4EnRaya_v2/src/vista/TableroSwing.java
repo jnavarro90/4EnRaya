@@ -25,6 +25,7 @@
  */
 package vista;
 
+import controlador.Partida;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -32,6 +33,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -45,7 +48,7 @@ import utilidades.RecursosAppSwing;
 /**
  * Tablero Swing
  */
-public class TableroSwing extends JFrame implements ActionListener, Observador { 
+public class TableroSwing extends JFrame implements ActionListener, Observer { 
   private final int  MAX_COLUMNAS = 8;
   private final int MAX_FILAS = 7;
   private RecursosAppSwing recSwingApp;
@@ -159,8 +162,8 @@ public class TableroSwing extends JFrame implements ActionListener, Observador {
     tableroVista = new TableroVista(numFilTab, numColTab, 
                                       TableroVista.RECIBIR_EVENTOS_RATON, 
                                       RecursosAppSwing.RUTA_RECURSOS, recSwingApp.getIconoApp(), recSwingApp);
-    tableroVista.nuevoObservador(this);
-    panel.add(tableroVista);
+    tableroVista.addObserver(this);
+    panel.add(tableroVista.getTVista());
     panel.add(new JPanel());
   }
   
@@ -235,30 +238,6 @@ public class TableroSwing extends JFrame implements ActionListener, Observador {
         }
   }
   
-  /**
-   * actualiza
-   */
-  @Override
-  public void actualiza(Object obj) {
-      
-      setJugadores(jugador1, jugador2);
-    if (obj instanceof Casilla[][]){
-        
-        Casilla[][] casillas = (Casilla[][])obj;
-        for (int fil = 1; fil < MAX_FILAS; fil++){
-            for(int col = 0; col < MAX_COLUMNAS; col++){
-                if(casillas[fil][col].getSimbolo().equals("#")){
-                    tableroVista.ponerIconoCasilla(invertirNumero(fil), col, 
-                                 recSwingApp.getIconoColor1());
-                }else if(casillas[fil][col].getSimbolo().equals("o")){
-                    tableroVista.ponerIconoCasilla(invertirNumero(fil), col, 
-                                 recSwingApp.getIconoColor2());
-                }            
-        }
-      }
-    }
-  }
-  
   private int invertirNumero(int n){
      switch (n){ 
          case 1:
@@ -289,8 +268,22 @@ public class TableroSwing extends JFrame implements ActionListener, Observador {
       }
         setJugadores(jugador1, jugador2);
   }
- public void nuevoObservador(Observador controlador){
-        tableroVista.nuevoObservador(controlador);
+  
+  public void repintar(Casilla[][] casillas){
+      for (int fil = 1; fil < MAX_FILAS; fil++){
+            for(int col = 0; col < MAX_COLUMNAS; col++){
+                if(casillas[fil][col].getSimbolo().equals("#")){
+                    tableroVista.ponerIconoCasilla(invertirNumero(fil), col, 
+                                 recSwingApp.getIconoColor1());
+                }else if(casillas[fil][col].getSimbolo().equals("o")){
+                    tableroVista.ponerIconoCasilla(invertirNumero(fil), col, 
+                                 recSwingApp.getIconoColor2());
+                }            
+        }
+      }
+  }
+ public void nuevoObservador(Observer controlador){
+        tableroVista.addObserver(controlador);
  }
   /**
    * acaba
@@ -300,4 +293,24 @@ public class TableroSwing extends JFrame implements ActionListener, Observador {
     
     System.exit(0);  
   }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+    setJugadores(jugador1, jugador2);
+    if (arg instanceof Casilla[][]){
+        Casilla[][] casillas = (Casilla[][])arg;
+        for (int fil = 1; fil < MAX_FILAS; fil++){
+            for(int col = 0; col < MAX_COLUMNAS; col++){
+                if(casillas[fil][col].getSimbolo().equals("#")){
+                    tableroVista.ponerIconoCasilla(invertirNumero(fil), col, 
+                                 recSwingApp.getIconoColor1());
+                }else if(casillas[fil][col].getSimbolo().equals("o")){
+                    tableroVista.ponerIconoCasilla(invertirNumero(fil), col, 
+                                 recSwingApp.getIconoColor2());
+                }            
+        }
+      }
+    }
+    }
 }

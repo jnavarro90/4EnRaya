@@ -11,6 +11,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.InputMismatchException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 import modelo.Casilla;
 import modelo.Jugador;
@@ -24,11 +26,12 @@ import vista.Observador;
  * @author Javi Navarro
  * @version 1.2
  */
-public class Partida implements Observador{
+public class Partida implements Observer{
     private final String CARGAR_PARTIDA = "Cargar Partida";
     private final String GUARDAR_PARTIDA = "Guardar Partida";
     private final String VOLVER = "Volver";
     private final String ERROR = "Error";
+    private final String NOMBRE_VACIO = "Nombre vacio";
     private static final String BOTON_GUARDAR = "BOTON_GUARDAR";
     private static final String BOTON_CHECKPOINT = "BOTON_CHECKPOINT";
     private final int ERROR_NUM = -1;
@@ -50,16 +53,16 @@ public class Partida implements Observador{
         this.vista = _vista;
         this.menu = _menu;
 
-        this.jugador1 = new Jugador(vista.preguntarNombre(
-                "Jugador 1"), "#", true);
-        this.jugador2 = new Jugador(vista.preguntarNombre(
-                "Jugador 2"), "o", false);
-
-        this.nombre = jugador1.hashCode() + jugador2.hashCode();
+        
         this.tablero = new Tablero();
-        this.tablero.nuevoObservador(vista.obtenerTableroSwing());
+        this.tablero.addObserver(vista.obtenerTableroSwing());
         this.menu.actualizarVista(vista);
         this.menu.actualizarPartida(this);
+        
+        vista.addObservadorTablero(this);
+        vista.addObservadorMenus(menu);
+        preguntarNombreJugadores();
+        
         this.vista.setNombresJugadores(jugador1, jugador2);
         this.menu.menuInicial();
     }
@@ -74,16 +77,20 @@ public class Partida implements Observador{
                 switch (opcionMenu){
                     case SALIR:
                         salir = true;
+                        System.exit(0);
                         break;
                     case CARGAR_PARTIDA:
                         if(this.cargar()){
                             this.mensaje("La partida se ha cargado "
                                     + "correctamente.");
                             vista.pintarTablero();
+                            vista.repintarTablero(tablero.getCasillas());
+                            
                         }else{
                             this.mensajeError("No tienes ninguna "
                                     + "partida guardada.\n"
                                     + "Se ha empezado una partida nueva.");
+                            vista.vaciarTablero();
                             vista.pintarTablero();
                         }
                         break;
@@ -108,25 +115,16 @@ public class Partida implements Observador{
      * @return si hay algun error al guardar devuelve false
      */
     public boolean guardar(){
-        int codigoJ1 = nombre + jugador1.getNombre().hashCode();
-        int codigoJ2 = nombre + jugador2.getNombre().hashCode();
-        int codigoT = nombre + "tablero".hashCode();
+        
         try{
-        ObjectOutputStream outJ1 = new ObjectOutputStream(
-        new FileOutputStream(RUTA_SAVE+codigoJ1+".dat"));
-        ObjectOutputStream outJ2;
-        outJ2 = new ObjectOutputStream(
-        new FileOutputStream(RUTA_SAVE+codigoJ2+".dat"));
-        ObjectOutputStream outT = new ObjectOutputStream(
-        new FileOutputStream(RUTA_SAVE+codigoT+".dat"));
+        ObjectOutputStream out = new ObjectOutputStream(
+        new FileOutputStream(RUTA_SAVE+nombre+".dat"));
         
-        outJ1.writeObject(jugador1);
-        outJ2.writeObject(jugador2);
-        outT.writeObject(tablero);
+        out.writeObject(jugador1);
+        out.writeObject(jugador2);
+        out.writeObject(tablero);
         
-        outJ1.close();
-        outJ2.close();
-        outT.close();
+        out.close();
         } catch (Exception ex) {
             System.out.println(ex);
             return false;
@@ -140,30 +138,44 @@ public class Partida implements Observador{
      * @return si hay algun error al cargar devuelve false
      */
     public boolean cargar(){
-        int codigoJ1 = nombre + jugador1.getNombre().hashCode();
-        int codigoJ2 = nombre + jugador2.getNombre().hashCode();
-        int codigoT = nombre + "tablero".hashCode();
         
         try{
-        ObjectInputStream inJ1 = new ObjectInputStream(
-        new FileInputStream(RUTA_SAVE+codigoJ1+".dat"));
-        ObjectInputStream inJ2 = new ObjectInputStream(
-        new FileInputStream(RUTA_SAVE+codigoJ2+".dat"));
-        ObjectInputStream inT = new ObjectInputStream(
-        new FileInputStream(RUTA_SAVE+codigoT+".dat"));
+        ObjectInputStream in = new ObjectInputStream(
+        new FileInputStream(RUTA_SAVE+nombre+".dat"));
         
-        jugador1 = (Jugador)inJ1.readObject();
-        jugador2 = (Jugador)inJ2.readObject();
-        tablero = (Tablero)inT.readObject();
+        jugador1 = (Jugador)in.readObject();
+        jugador2 = (Jugador)in.readObject();
+        tablero = (Tablero)in.readObject();
         
-        inJ1.close();
-        inJ2.close();
-        inT.close();
+        in.close();
+        this.tablero.addObserver(vista.obtenerTableroSwing());
         } catch (Exception ex) {
             System.out.println(ex);
             return false;
         }
     return true;
+    }
+    private void preguntarNombreJugadores(){
+        this.jugador1 = new Jugador(NOMBRE_VACIO, "#", true);
+        this.jugador2 = new Jugador(NOMBRE_VACIO, "o", false);
+        
+        /**
+         * Control para que el nombre no sea vacio, junto con menuVista
+         * que envia NOMBRE_VACIO si el jugador no ha introducido nada
+         */
+        while (jugador1.getNombre().equals(NOMBRE_VACIO) 
+                || jugador2.getNombre().equals(NOMBRE_VACIO)){
+        menu.preguntarNombre(menu.OPCION_NOMBRE);
+        }
+    }
+    
+    public void asignarNombreJugador(String nombre){
+        if(jugador1.getNombre().equals(NOMBRE_VACIO)){
+            jugador1.setNombre(nombre);
+        }else{
+            jugador2.setNombre(nombre);
+            this.nombre = jugador1.hashCode() + jugador2.hashCode();
+        }
     }
     /**
      * Cambia la variable turno del jugador1 de valor, 
@@ -209,14 +221,13 @@ public class Partida implements Observador{
     }
 
     @Override
-    public void actualiza(Object obj) {
+    public void update(Observable o, Object arg) {
         int columna;
         int fila;    
-        if (obj instanceof CasillaVista){
-            CasillaVista casillaVista = (CasillaVista)obj;
+        if (arg instanceof CasillaVista){
+            CasillaVista casillaVista = (CasillaVista)arg;
             columna = casillaVista.getCol();
             this.vista.setNombresJugadores(jugador1, jugador2);
-            System.out.println(columna);
             if(this.jugador1.miTurno()){
                 jugadorActual = this.jugador1;
             }else{
@@ -227,32 +238,30 @@ public class Partida implements Observador{
                     this.tablero.ponerFicha(fila, columna, 
                             jugadorActual.getSimbolo());
                     this.cambiarTurno();
+                    
+                    /**
+                     * Comprueba si es ganador o empate
+                     */
                     if(this.tablero.finDePartida(fila, columna)){
                         this.mensaje("¡Ganador: "
                                 +jugadorActual.getNombre()+"!");
                         jugadorActual.victoria();
                         vista.ocultarTablero();
-                        vista.VaciarTablero();
+                        vista.vaciarTablero();
                         menu.menuFinal();
                     }else if(this.tablero.esEmpate()){
                         this.mensaje("La partida termina en empate.");
                         vista.ocultarTablero();
-                        vista.VaciarTablero();
+                        vista.vaciarTablero();
                         menu.menuFinal();
                     }
             }else{
                 this.mensajeError("No se pudo realizar su jugada,"
                         + " vuelve a intentarlo.");
             }
-//            }else{
-//                
-//                //MENU OPCIONES
-//                
-//               // switch (this.menuOpciones()){
-//                
-//            }
-        }else if (obj instanceof String){
-            String opcion = (String)obj;
+            
+        }else if (arg instanceof String){
+            String opcion = (String)arg;
             switch (opcion) {
                 case SALIR:
                     salir = true;
@@ -260,8 +269,6 @@ public class Partida implements Observador{
                     if(this.guardar()){
                         this.mensaje("La partida se ha guardado "
                                 + "correctamente.");
-//                        this.tablero.dibujar(this.jugador1, 
-//                                this.jugador2);
                     }else{
                         this.mensajeError("La partida no se ha guardado"
                                 + " correctamente.");
@@ -271,8 +278,14 @@ public class Partida implements Observador{
                     if(this.cargar()){
                         this.mensaje("La partida ha vuelto a el"
                                 + " ultimo punto de control.");
-//                        this.tablero.dibujar(this.jugador1, 
-//                                this.jugador2);
+                        /**
+                         *Para que se vuelva a ver bien hay que vaciar y 
+                         * repintarlo si solo se repinta deja las fichas 
+                         * antiguas
+                         */
+                        vista.vaciarTablero();
+                        vista.repintarTablero(tablero.getCasillas());
+                        
                     }else{
                         this.mensajeError("La partida no se ha cargado"
                                 + " correctamente.");

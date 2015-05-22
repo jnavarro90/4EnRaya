@@ -5,17 +5,21 @@
  */
 package controlador;
 
+import java.util.Observable;
+import java.util.Observer;
+import modelo.Jugador;
 import vista.IUGrafica;
-import vista.Observador;
 
 /**
  *
  * @author Javi
  */
 
-public class ControlMenus implements Observador{
+public class ControlMenus implements Observer{
+    public final String OPCION_NOMBRE = "opcion nombre";
     private IUGrafica vista;
     private Partida partida;
+    private String opcion = "";
 
     public ControlMenus() {
         
@@ -34,13 +38,21 @@ public class ControlMenus implements Observador{
     public void menuFinal(){
         this.vista.menuFinal();
     }
+    
+    public void preguntarNombre(String opcion){
+        this.opcion = opcion;
+        vista.preguntarNombre();
+    }
 
     @Override
-    public void actualiza(Object obj) {
-        if (obj instanceof String) { 
-            this.partida.cambiarOpcionMenu((String)obj); 
-        }else if(obj instanceof Boolean){
-            this.partida.seguirJugando((Boolean)obj);
-        }   
+    public void update(Observable o, Object arg) {
+        if (arg instanceof Boolean) { 
+            this.partida.seguirJugando((Boolean)arg);
+        }else if(arg instanceof String && opcion.equals(OPCION_NOMBRE)){
+            this.partida.asignarNombreJugador((String)arg);
+            opcion = "";
+        }else{
+            this.partida.cambiarOpcionMenu((String)arg); 
+        } 
     }
 }

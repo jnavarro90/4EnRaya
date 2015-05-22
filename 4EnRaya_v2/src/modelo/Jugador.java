@@ -18,6 +18,11 @@ public class Jugador implements Serializable{
         this.simbolo = simbolo;
         this.turno = turno;
     }
+
+    public Jugador(String simbolo, boolean turno) {
+        this.simbolo = simbolo;
+        this.turno = turno;
+    }
     
     public void victoria(){
         this.ganadas += 1; 
@@ -30,7 +35,10 @@ public class Jugador implements Serializable{
     public String getNombre() {
         return nombre;
     }
-    
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
    public boolean miTurno(){
        return turno;
    }

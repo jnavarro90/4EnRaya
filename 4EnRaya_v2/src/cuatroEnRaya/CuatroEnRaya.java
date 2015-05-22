@@ -18,8 +18,5 @@ public class CuatroEnRaya {
         menu = new ControlMenus();
         
         partidaActual = new Partida(vista, menu);
-        vista.addObservadorTablero(partidaActual);
-        vista.addObservadorMenus(menu);
-        
     }
 }

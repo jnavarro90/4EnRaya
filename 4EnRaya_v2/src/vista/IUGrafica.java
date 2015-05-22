@@ -7,8 +7,10 @@ package vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observer;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import modelo.Casilla;
 import modelo.Jugador;
 import utilidades.RecursosAppSwing;
 
@@ -29,25 +31,21 @@ public class IUGrafica extends JFrame{
     public final String ACERCA_DE = "Acerca de ..";
     public IUGrafica(){
         menuJugador = new MenuVista("Menu Inicial");
-        menuJugador.setVisible(false);
         RecursosAppSwing recSwingApp = RecursosAppSwing.instancia("es.xml");
         tablero = new TableroSwing(6, 7, recSwingApp);
         tablero.setVisible(false);
     }
 
     public void menuInicial(){
-        menuJugador.setVisible(true);
         menuJugador.obtenerOpcionMenuInicial();
     }
     
     public void menuFinal(){
 //        menuJugador = new MenuVista("Menu Final");
-        menuJugador.setVisible(true);
         menuJugador.obtenerOpcionMenuFinal();
     }
-    public String preguntarNombre(String titulo){
-        menuJugador = new MenuVista("Jugador");
-        return menuJugador.obtenerNombreJugador(titulo);
+    public void preguntarNombre(){
+        menuJugador.obtenerNombreJugador();
     }
     
     public void setNombresJugadores(Jugador j1, Jugador j2){
@@ -65,15 +63,19 @@ public class IUGrafica extends JFrame{
     public void cerrarTablero(){
         tablero.acaba();
     }
-    public void VaciarTablero(){
+    public void vaciarTablero(){
         tablero.vaciar();
     }
     
-    public void addObservadorMenus(Observador controlador){
-           menuJugador.nuevoObservador(controlador);
+    public void repintarTablero(Casilla[][]casillas){
+        tablero.repintar(casillas);
     }
     
-    public void addObservadorTablero(Observador controlador){
+    public void addObservadorMenus(Observer controlador){
+           menuJugador.addObserver(controlador);
+    }
+    
+    public void addObservadorTablero(Observer controlador){
         tablero.nuevoObservador(controlador);
     }
     
