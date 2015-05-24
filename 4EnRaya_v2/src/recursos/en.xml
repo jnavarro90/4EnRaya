@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <tableroSwing>
   <app>
-    <titulo>Swing Board</titulo>
-    <version>Swing Board 1.1 (04/2012)</version>
-    <autor>CCC</autor>
+    <titulo>Four-in-a-Row</titulo>
+    <version>Four-in-a-Row 2.0 (04/2012)</version>
+    <autor>Javi Navarro</autor>
     <lenguaje>en</lenguaje>
-    <icono>barco.png</icono>    
+    <iconoHueco>Hueco.png</iconoHueco>
+    <iconoColor1>Color1.png</iconoColor1>
+    <iconoColor2>Color2.png</iconoColor2>  
   </app>
   <UI>
     <menus>
@@ -34,16 +36,20 @@
     </menus>
     <etiquetas>
       <etiqueta>
-        <id>CONTRINCANTE</id>
-        <texto>Adversary: </texto>
+        <id>OPCIONES</id>
+        <texto>Options: </texto>
       </etiqueta>
       <etiqueta>
-        <id>BOTON_INVITAR</id>
-        <texto>Invite</texto>
+        <id>MARCADOR</id>
+        <texto>Scoreboard: </texto>
       </etiqueta>
       <etiqueta>
-        <id>ESTADO_TABLERO</id>
-        <texto>State: </texto>
+        <id>BOTON_GUARDAR</id>
+        <texto>Save</texto>
+      </etiqueta>
+      <etiqueta>
+        <id>BOTON_CHECKPOINT</id>
+        <texto>Checkpoint</texto>
       </etiqueta>
     </etiquetas>
     <etiquetasSistema>

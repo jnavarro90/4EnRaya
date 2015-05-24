@@ -73,7 +73,7 @@ public class RecursosAppSwing {
   private Map<String, Menu> menusItem = new HashMap<>();
   private Map<String, String> etiquetas = new HashMap<>();
   
-  private static RecursosAppSwing instancia = null;  // es singleton
+  private static RecursosAppSwing instancia = null;
   private LectorXML recursos;
   private ImageIcon iconoHueco;
   private ImageIcon iconoColor1;

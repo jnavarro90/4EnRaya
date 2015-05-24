@@ -1,20 +1,15 @@
 /**
- * Casilla.java
- * 19-abr-2012
- * @author ccatalan
+ * CasillaVista.java
+ * @date 22-mayo-2015
+ * @author Javi Navarro
  * 
- *  Version 1.1
- *  27-abr-2012
- *  Modificaciones para mejora la separación MVC
- *    - Usamos la propiedad icon de JLabel para guardar la imagen de la casilla
+ * @version 2 
  */
 package vista;
 
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
 
 /**
  * Una casilla del tablero es un JLabel
@@ -31,7 +26,6 @@ public class CasillaVista extends JLabel {
     setIcon(icon);
         
     setHorizontalAlignment(SwingConstants.CENTER);
-//    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
   }
   
   /**

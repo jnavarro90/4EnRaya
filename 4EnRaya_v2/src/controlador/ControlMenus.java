@@ -1,58 +1,59 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * ControlMenus.java 
+ * @date 22-mayo-2015
+ * @author Javi Navarro
+ *
+ * @version 2 
+ * Nuevo controlador con respecto a la version 1 para controlar de una
+ * forma más ordenada los menus que mostrara la vista
  */
 package controlador;
 
 import java.util.Observable;
 import java.util.Observer;
-import modelo.Jugador;
 import vista.IUGrafica;
 
-/**
- *
- * @author Javi
- */
+public class ControlMenus implements Observer {
 
-public class ControlMenus implements Observer{
     public final String OPCION_NOMBRE = "opcion nombre";
     private IUGrafica vista;
     private Partida partida;
     private String opcion = "";
 
     public ControlMenus() {
-        
+
     }
-    
-    public void actualizarVista(IUGrafica vista){
+
+    public void actualizarVista(IUGrafica vista) {
         this.vista = vista;
     }
-    public void actualizarPartida(Partida partida){
+
+    public void actualizarPartida(Partida partida) {
         this.partida = partida;
     }
-    public void menuInicial(){
+
+    public void menuInicial() {
         this.vista.menuInicial();
     }
-    
-    public void menuFinal(){
+
+    public void menuFinal() {
         this.vista.menuFinal();
     }
-    
-    public void preguntarNombre(String opcion){
+
+    public void preguntarNombre(String opcion) {
         this.opcion = opcion;
         vista.preguntarNombre();
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof Boolean) { 
-            this.partida.seguirJugando((Boolean)arg);
-        }else if(arg instanceof String && opcion.equals(OPCION_NOMBRE)){
-            this.partida.asignarNombreJugador((String)arg);
+        if (arg instanceof Boolean) {
+            this.partida.seguirJugando((Boolean) arg);
+        } else if (arg instanceof String && opcion.equals(OPCION_NOMBRE)) {
+            this.partida.asignarNombreJugador((String) arg);
             opcion = "";
-        }else{
-            this.partida.cambiarOpcionMenu((String)arg); 
-        } 
+        } else {
+            this.partida.cambiarOpcionMenu((String) arg);
+        }
     }
 }

@@ -40,10 +40,6 @@
         <texto>Opciones: </texto>
       </etiqueta>
       <etiqueta>
-        <id>MOVIMIENTOS</id>
-        <texto>Movimientos: </texto>
-      </etiqueta>
-      <etiqueta>
         <id>MARCADOR</id>
         <texto>Marcador: </texto>
       </etiqueta>
@@ -54,10 +50,6 @@
       <etiqueta>
         <id>BOTON_CHECKPOINT</id>
         <texto>Checkpoint</texto>
-      </etiqueta>
-      <etiqueta>
-        <id>ESTADO_TABLERO</id>
-        <texto>Estado: </texto>
       </etiqueta>
     </etiquetas>
     <etiquetasSistema>
