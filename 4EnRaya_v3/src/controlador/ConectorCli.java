@@ -14,34 +14,42 @@ import java.util.logging.Logger;
  */
 public class ConectorCli {
     private Socket s;
-    private final int puerto = 9000;
+    private final int PUERTO = 9000;
+    private final String IP = "192.168.1.100";
     private ObjectOutputStream salida;
     private ObjectInputStream entrada;
 
     public ConectorCli(){
         try {
-            s = new Socket("127.0.0.1", puerto);
+            iniciarConexion();
             obtenerFlujos();
         } catch (IOException ex) {
-            Logger.getLogger(ConectorCli.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getLocalizedMessage());
         }
         System.out.println(" envía saludo");
         try {
-            salida.writeUTF("hola");
+            salida.writeObject("hola");
             String respuesta="";
-            respuesta = entrada.readUTF();
+            respuesta = (String)entrada.readObject();
             System.out.println(" Servidor devuelve saludo: " + respuesta);
         } catch (IOException ex) {
             Logger.getLogger(ConectorCli.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ConectorCli.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    private void iniciarConexion() throws IOException{
+        s = new Socket(IP, PUERTO);
     }
     
     private void obtenerFlujos() throws IOException{
-        //Creacion de entrada de datos
-        this.entrada = new ObjectInputStream(s.getInputStream());
-
+        
         //Creacion de salida de datos
         this.salida = new ObjectOutputStream(s.getOutputStream());
+        this.salida.flush();
+        
+        //Creacion de entrada de datos
+        this.entrada = new ObjectInputStream(s.getInputStream());
     }
     
     public void desconnectar() {
