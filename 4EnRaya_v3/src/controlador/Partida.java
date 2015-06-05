@@ -48,7 +48,7 @@ public class Partida implements Observer {
     public Partida(IUGrafica _vista, ControlMenus _menu) {
         this.vista = _vista;
         this.menu = _menu;
-
+        ConectorCli cc = new ConectorCli();
         this.tablero = new Tablero();
         this.tablero.addObserver(vista.obtenerTableroSwing());
         this.menu.actualizarVista(vista);
@@ -157,6 +157,7 @@ public class Partida implements Observer {
     }
 
     private void preguntarNombreJugadores() {
+        
         this.jugador1 = new Jugador(NOMBRE_VACIO, "#", true);
         this.jugador2 = new Jugador(NOMBRE_VACIO, "o", false);
 

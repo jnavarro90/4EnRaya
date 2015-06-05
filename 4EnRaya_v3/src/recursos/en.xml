@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tableroSwing>
+  <app>
+    <titulo>Four-in-a-Row</titulo>
+    <version>Four-in-a-Row 2.0 (04/2012)</version>
+    <autor>Javi Navarro</autor>
+    <lenguaje>en</lenguaje>
+    <iconoHueco>Hueco.png</iconoHueco>
+    <iconoColor1>Color1.png</iconoColor1>
+    <iconoColor2>Color2.png</iconoColor2>  
+  </app>
+  <UI>
+    <menus>
+      <menu>
+        <id>MENU_FICHERO</id>
+        <texto>File</texto>
+        <menuItems>
+          <menuItem>
+            <id>MENU_ITEM_SALIR</id>
+            <texto>Exit</texto>
+            <atajo>E</atajo>                   
+          </menuItem>
+        </menuItems>
+      </menu>
+      <menu>
+        <id>MENU_AYUDA</id>
+        <texto>Help</texto>
+        <menuItems>
+          <menuItem>
+            <id>MENU_ITEM_ACERCA_DE</id>
+            <texto>About...</texto>
+            <atajo>A</atajo>                   
+          </menuItem>
+        </menuItems>
+      </menu>
+    </menus>
+    <etiquetas>
+      <etiqueta>
+        <id>OPCIONES</id>
+        <texto>Options: </texto>
+      </etiqueta>
+      <etiqueta>
+        <id>MARCADOR</id>
+        <texto>Scoreboard: </texto>
+      </etiqueta>
+      <etiqueta>
+        <id>BOTON_GUARDAR</id>
+        <texto>Save</texto>
+      </etiqueta>
+      <etiqueta>
+        <id>BOTON_CHECKPOINT</id>
+        <texto>Checkpoint</texto>
+      </etiqueta>
+    </etiquetas>
+    <etiquetasSistema>
+      <etiquetaSistema>
+        <id>OptionPane.cancelButtonText</id>
+        <texto>Cancel</texto>
+      </etiquetaSistema>
+      <etiquetaSistema>
+        <id>OptionPane.okButtonText</id>
+        <texto>OK</texto>
+      </etiquetaSistema>
+      <etiquetaSistema>
+        <id>OptionPane.noButtonText</id>
+        <texto>No</texto>
+      </etiquetaSistema>
+      <etiquetaSistema>
+        <id>OptionPane.yesButtonText</id>
+        <texto>Yes</texto>
+      </etiquetaSistema>
+    </etiquetasSistema>
+  </UI>
+</tableroSwing>
+

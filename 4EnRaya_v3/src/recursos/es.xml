@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tableroSwing>
+  <app>
+    <titulo>4 en Raya</titulo>
+    <version>4 en raya v2.0</version>
+    <autor>Javi Navarro</autor>
+    <lenguaje>es</lenguaje>
+    <iconoHueco>Hueco.png</iconoHueco>
+    <iconoColor1>Color1.png</iconoColor1>
+    <iconoColor2>Color2.png</iconoColor2>    
+  </app>
+  <UI>
+    <menus>
+      <menu>
+        <id>MENU_FICHERO</id>
+        <texto>Fichero</texto>
+        <menuItems>
+          <menuItem>
+            <id>MENU_ITEM_SALIR</id>
+            <texto>Salir</texto>
+            <atajo>S</atajo>                   
+          </menuItem>
+        </menuItems>
+      </menu>
+      <menu>
+        <id>MENU_AYUDA</id>
+        <texto>Ayuda</texto>
+        <menuItems>
+          <menuItem>
+            <id>MENU_ITEM_ACERCA_DE</id>
+            <texto>Acerca de...</texto>
+            <atajo>A</atajo>                   
+          </menuItem>
+        </menuItems>
+      </menu>
+    </menus>
+    <etiquetas>
+      <etiqueta>
+        <id>OPCIONES</id>
+        <texto>Opciones: </texto>
+      </etiqueta>
+      <etiqueta>
+        <id>MARCADOR</id>
+        <texto>Marcador: </texto>
+      </etiqueta>
+      <etiqueta>
+        <id>BOTON_GUARDAR</id>
+        <texto>Guardar</texto>
+      </etiqueta>
+      <etiqueta>
+        <id>BOTON_CHECKPOINT</id>
+        <texto>Checkpoint</texto>
+      </etiqueta>
+    </etiquetas>
+    <etiquetasSistema>
+      <etiquetaSistema>
+        <id>OptionPane.cancelButtonText</id>
+        <texto>Cancelar</texto>
+      </etiquetaSistema>
+      <etiquetaSistema>
+        <id>OptionPane.okButtonText</id>
+        <texto>Aceptar</texto>
+      </etiquetaSistema>
+      <etiquetaSistema>
+        <id>OptionPane.noButtonText</id>
+        <texto>No</texto>
+      </etiquetaSistema>
+      <etiquetaSistema>
+        <id>OptionPane.yesButtonText</id>
+        <texto>Sí</texto>
+      </etiquetaSistema>
+    </etiquetasSistema>
+  </UI>
+</tableroSwing>
+
