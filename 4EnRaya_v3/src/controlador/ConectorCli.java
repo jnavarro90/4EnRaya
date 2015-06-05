@@ -27,11 +27,13 @@ public class ConectorCli {
         }
         System.out.println(" envía saludo");
         try {
-            salida.writeUTF("hola");
+            salida.writeObject("hola");
             String respuesta="";
-            respuesta = entrada.readUTF();
+            respuesta = (String)entrada.readObject();
             System.out.println(" Servidor devuelve saludo: " + respuesta);
         } catch (IOException ex) {
+            Logger.getLogger(ConectorCli.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(ConectorCli.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

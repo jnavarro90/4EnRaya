@@ -7,6 +7,7 @@ package pkg4enrayaservidor;
 
 import java.io.*;
 import java.net.*;
+import java.util.Observable;
 import java.util.logging.*;
 /**
  *
@@ -19,8 +20,9 @@ public class HiloConectorSv extends Thread {
     private int idSessio;
     private ObjectOutputStream salida;
     private ObjectInputStream entrada;
-    public HiloConectorSv(Socket socket, int id) {
+    public HiloConectorSv(Socket socket, int id) throws IOException {
         this.socket = socket;
+
         this.idSessio = id;
         try {
             obtenerFlujos();
@@ -40,23 +42,29 @@ public class HiloConectorSv extends Thread {
     }
 
     private void obtenerFlujos() throws IOException{
+        
+        //Creacion de salida de datos
+        this.salida = new ObjectOutputStream(socket.getOutputStream());
+        this.salida.flush();
+
         //Creacion de entrada de datos
         this.entrada = new ObjectInputStream(socket.getInputStream());
 
-        //Creacion de salida de datos
-        this.salida = new ObjectOutputStream(socket.getOutputStream());
     }
     
     @Override
     public void run() {
         String accion = "";
+
         try {
-            accion = entrada.readLine();
+            accion = (String)entrada.readObject();
             if(accion.equals("hola")){
                 System.out.println("El cliente con idSesion "+this.idSessio+" saluda");
-                salida.writeUTF("adios");
+                salida.writeObject("adios");
             }
         } catch (IOException ex) {
+            Logger.getLogger(HiloConectorSv.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(HiloConectorSv.class.getName()).log(Level.SEVERE, null, ex);
         }
         desconnectar();

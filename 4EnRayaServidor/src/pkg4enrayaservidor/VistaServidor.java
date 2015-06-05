@@ -28,8 +28,6 @@ import javax.swing.border.LineBorder;
 
 public class VistaServidor extends Observable implements Observer, ActionListener{
 
-    
-    private final String MENSAJE_INICIO = "Mensaje inicio";
     private final String INICIAR_SERVIDOR = "Iniciar servidor";
     private final String APAGAR_SERVIDOR = "Apagar servidor";
     private final String TITULO = "Servidor 4 en Raya";
@@ -45,7 +43,7 @@ public class VistaServidor extends Observable implements Observer, ActionListene
 
         initUI();
     }
-
+    
     public void initUI() {
         vServidor = new JFrame();
 
@@ -95,6 +93,8 @@ public class VistaServidor extends Observable implements Observer, ActionListene
             String texto = (String)arg;
             if(arg.equals(CONECTADO)){
                 statusbar.setText(CONECTADO);
+            }else if(arg.equals(DESCONECTADO)){
+                statusbar.setText(DESCONECTADO);
             }else{
                 texto = textJugadores.getText()+"\n"+texto;
                 textJugadores.setText(texto);
@@ -109,8 +109,6 @@ public class VistaServidor extends Observable implements Observer, ActionListene
     public void actionPerformed(ActionEvent e) {
         JButton boton = (JButton) e.getSource();
         if (boton.getText().equals(INICIAR_SERVIDOR)) {
-            setChanged();
-            notifyObservers(MENSAJE_INICIO);
             setChanged();
             notifyObservers(INICIAR_SERVIDOR);
         } else if (boton.getText().equals(APAGAR_SERVIDOR)) {
