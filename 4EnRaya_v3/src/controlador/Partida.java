@@ -32,6 +32,7 @@ public class Partida implements Observer {
     private static final String BOTON_GUARDAR = "BOTON_GUARDAR";
     private static final String BOTON_CHECKPOINT = "BOTON_CHECKPOINT";
     private final int ERROR_NUM = -1;
+    private final String NO_OK_JUGAR = "no ok jugar";
     private final String NUEVA_PARTIDA = "Nueva Partida";
     private final String SALIR = "Salir";
     private final String RUTA_SAVE = "./guardados/";
@@ -42,13 +43,16 @@ public class Partida implements Observer {
     private boolean salir = false;
     private Jugador jugadorActual;
     private int nombre;
+    private ConectorCli conector;
     private String opcionMenu = " ";
     private ControlMenus menu;
+    private String ipOponente = "";
 
     public Partida(IUGrafica _vista, ControlMenus _menu) {
         this.vista = _vista;
         this.menu = _menu;
-        ConectorCli cc = new ConectorCli();
+        conector = new ConectorCli();
+        conector.start();
         this.tablero = new Tablero();
         this.tablero.addObserver(vista.obtenerTableroSwing());
         this.menu.actualizarVista(vista);
@@ -56,10 +60,10 @@ public class Partida implements Observer {
 
         vista.addObservadorTablero(this);
         vista.addObservadorMenus(menu);
-        preguntarNombreJugadores();
-
-        this.vista.actualizarPanelDerecha(jugador1, jugador2);
-        this.menu.menuInicial();
+        preguntarNombreJugador();
+        menu.elegirOponente(conector.getListaJugadoresConectados());
+//        this.vista.actualizarPanelDerecha(jugador1, jugador2);
+        //this.menu.menuInicial();
     }
 
     /**
@@ -156,30 +160,43 @@ public class Partida implements Observer {
         return true;
     }
 
-    private void preguntarNombreJugadores() {
+    private void preguntarNombreJugador() {
         
-        this.jugador1 = new Jugador(NOMBRE_VACIO, "#", true);
-        this.jugador2 = new Jugador(NOMBRE_VACIO, "o", false);
+        this.jugador1 = new Jugador(NOMBRE_VACIO);
+        this.jugador2 = new Jugador(NOMBRE_VACIO);
 
         /**
          * Control para que el nombre no sea vacio, junto con menuVista que
          * envia NOMBRE_VACIO si el jugador no ha introducido nada
          */
-        while (jugador1.getNombre().equals(NOMBRE_VACIO)
-                || jugador2.getNombre().equals(NOMBRE_VACIO)) {
+        while (jugador1.getNombre().equals(NOMBRE_VACIO)) {
             menu.preguntarNombre(menu.OPCION_NOMBRE);
+        }
+        if(!conector.comprobarNombre(jugador1.getNombre())){
+            preguntarNombreJugador();
         }
     }
 
-    public void asignarNombreJugador(String nombre) {
+    public boolean asignarNombreJugador(String nombre) {
         if (jugador1.getNombre().equals(NOMBRE_VACIO)) {
             jugador1.setNombre(nombre);
+            return true;
         } else {
             jugador2.setNombre(nombre);
             this.nombre = jugador1.hashCode() + jugador2.hashCode();
+            System.out.println("Jugadores :" + jugador1.getNombre()+ " - "+jugador2.getNombre());
+            ipOponente = conector.invitarOponente(nombre);
+            System.out.println(ipOponente);
+            if(ipOponente.equals(NO_OK_JUGAR)){
+                return false;
+            }
+            return true;
         }
     }
 
+    public void esperarInvitacionJugar(){
+        conector.comprobarInvitacionJugar();
+    }
     /**
      * Cambia la variable turno del jugador1 de valor, aunque los dos 
      * tienen una variable turno se puede controlar solo 
@@ -207,6 +224,9 @@ public class Partida implements Observer {
         }
     }
 
+    public void actualizarListaConectados(){
+        menu.refrescarLista(conector.getListaJugadoresConectados());
+    }
     /**
      * Escribe un mensaje por pantalla
      *

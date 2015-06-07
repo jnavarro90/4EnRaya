@@ -16,6 +16,9 @@ public class Jugador implements Serializable {
     private int ganadas;
     private boolean turno;
 
+    public Jugador(String _nombre){
+        this.nombre = _nombre;
+    }
     public Jugador(String nombre, String simbolo, boolean turno) {
         this.nombre = nombre;
         this.simbolo = simbolo;

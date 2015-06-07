@@ -10,6 +10,7 @@
  */
 package vista;
 
+import java.util.HashMap;
 import java.util.Observer;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -31,6 +32,13 @@ public class IUGrafica extends JFrame {
         tablero.setVisible(false);
     }
 
+    public void seleccionarOponente(HashMap _lista){
+        menuJugador.seleccionOponente(_lista);
+    }
+    public void refrescarLista(HashMap _lista){
+        menuJugador.refrescarOponentes(_lista);
+    }
+    
     public void menuInicial() {
         menuJugador.obtenerOpcionMenuInicial();
     }
