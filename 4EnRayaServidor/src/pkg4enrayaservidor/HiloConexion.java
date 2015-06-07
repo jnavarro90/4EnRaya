@@ -29,6 +29,7 @@ public class HiloConexion extends Thread {
                 
             }catch ( Exception e ) {
                 System.err.println( "El servidor terminó la conexión" );
+                e.printStackTrace();
             }
         }
    }
